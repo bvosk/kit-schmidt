@@ -1,6 +1,7 @@
 ﻿using KitSchmidt.Forms;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.FormFlow;
+using Microsoft.Bot.Connector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +22,30 @@ namespace KitSchmidt.Dialogs
             // Store the value that NewOrderDialog returned. 
             // (At this point, new order dialog has finished and returned some value to use within the root dialog.)
             var newEvent = await result;
+            var eventCardAttachment = NewEventHeroCard(newEvent).ToAttachment();
+            var reply = context.MakeMessage();
 
-            await context.PostAsync($"New order dialog just told me there's an event called {newEvent.Name} happening on {newEvent.Date.ToShortDateString()}!");
+            reply.Attachments.Add(eventCardAttachment);
+            await context.PostAsync(reply);
 
             // Again, wait for the next message from the user.
-            context.Done("ResumeResult");
+            context.Done(newEvent);
+        }
+
+        private static HeroCard NewEventHeroCard(EventPoll newEvent)
+        {
+            return new HeroCard()
+            {
+                Title = $"{newEvent.Name}",
+                Subtitle = $"{newEvent.Date.ToString("g")}",
+                Images = new List<CardImage>
+                {
+                    new CardImage()
+                    {
+                        Url = ConstantStrings.EventImageUrl
+                    }
+                }
+            };
         }
     }
 }
