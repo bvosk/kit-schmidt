@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
-using KitSchmidt.DAL;
-using KitSchmidt.DAL.Models;
+using System.Collections.Generic;
+using System.Threading;
+using KitSchmidt.Forms;
 
 namespace KitSchmidt.Dialogs
 {
@@ -20,34 +21,38 @@ namespace KitSchmidt.Dialogs
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
+            var messageReceived = activity.Text;           
 
-            // calculate something for us to return
-            int length = (activity.Text ?? string.Empty).Length;
-
-            // Save message to database
-            try
+            if (messageReceived == ConstantStrings.NewEvent)
             {
-                using (var db = new KitContext())
-                {
-                    var message = new Message()
+                await context.Forward(NewEventDialog.MakeNewEventDialog(), NewEventDialog.ResumeAfterNewEventDialog, activity, CancellationToken.None);
+            }
+            else
+            {
+                var reply = new Activity(type: ActivityTypes.Message);
+                reply = DefaultActivity(context, activity);
+
+                await context.PostAsync(reply.AsMessageActivity());
+                context.Wait(MessageReceivedAsync);
+            }
+        }
+
+        private static Activity DefaultActivity(IDialogContext context, Activity activity)
+        {
+            Activity reply = activity.CreateReply("Hey there! What would you like to do?");
+            reply.Type = ActivityTypes.Message;
+            reply.TextFormat = TextFormatTypes.Markdown;
+            reply.ReplyToId = context.Activity.Recipient.Id;
+
+            reply.SuggestedActions = new SuggestedActions()
+            {
+                Actions = new List<CardAction>()
                     {
-                        User = activity.From.Name,
-                        Text = activity.Text
-                    };
+                        new CardAction() { Title = ConstantStrings.NewEvent, Type = ActionTypes.ImBack, Value = ConstantStrings.NewEvent }
+                    }
+            };
 
-                    db.Messages.Add(message);
-                    await db.SaveChangesAsync();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            // return our reply to the user
-            await context.PostAsync($"You sent {activity.Text} which was {length} characters");
-
-            context.Wait(MessageReceivedAsync);
+            return reply;
         }
     }
 }
