@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using KitSchmidt.DAL;
 
-namespace KitSchmidt.Migrations
+namespace KitSchmidt.Common.Migrations
 {
     [DbContext(typeof(KitContext))]
     partial class KitContextModelSnapshot : ModelSnapshot

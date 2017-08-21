@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using KitSchmidt.DAL;
 
-namespace KitSchmidt.Migrations
+namespace KitSchmidt.Common.Migrations
 {
     [DbContext(typeof(KitContext))]
-    [Migration("20170622002733_MyFirstMigration")]
-    partial class MyFirstMigration
+    [Migration("20170821012540_Reset1")]
+    partial class Reset1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

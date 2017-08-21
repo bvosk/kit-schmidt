@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitSchmidt", "KitSchmidt\KitSchmidt.csproj", "{B0B01576-5103-4B8D-A46F-A77EA2D098CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitSchmidt.Common", "KitSchmidt.Common\KitSchmidt.Common.csproj", "{F779ABCD-D66D-452F-8328-4E6D3F50A1D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{B0B01576-5103-4B8D-A46F-A77EA2D098CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0B01576-5103-4B8D-A46F-A77EA2D098CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0B01576-5103-4B8D-A46F-A77EA2D098CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F779ABCD-D66D-452F-8328-4E6D3F50A1D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F779ABCD-D66D-452F-8328-4E6D3F50A1D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F779ABCD-D66D-452F-8328-4E6D3F50A1D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F779ABCD-D66D-452F-8328-4E6D3F50A1D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B2CCAA6-E446-4174-A692-577EEE26760D}
 	EndGlobalSection
 EndGlobal

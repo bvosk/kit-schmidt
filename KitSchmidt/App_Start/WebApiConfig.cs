@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using KitSchmidt.App_Start;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 
 namespace KitSchmidt
@@ -23,6 +21,7 @@ namespace KitSchmidt
             };
 
             // Web API configuration and services
+            IoCBootstrapper.Run();
 
             // Web API routes
             config.MapHttpAttributeRoutes();

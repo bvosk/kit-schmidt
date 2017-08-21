@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace KitSchmidt.Migrations
+namespace KitSchmidt.Common.Migrations
 {
-    public partial class MyFirstMigration : Migration
+    public partial class Reset1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

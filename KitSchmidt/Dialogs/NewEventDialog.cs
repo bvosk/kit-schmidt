@@ -1,4 +1,8 @@
-﻿using KitSchmidt.Forms;
+﻿using KitSchmidt.App_Start;
+using KitSchmidt.Common.DAL;
+using KitSchmidt.DAL;
+using KitSchmidt.DAL.Models;
+using KitSchmidt.Forms;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.FormFlow;
 using Microsoft.Bot.Connector;
@@ -24,6 +28,14 @@ namespace KitSchmidt.Dialogs
             var newEvent = await result;
             var eventCardAttachment = NewEventHeroCard(newEvent).ToAttachment();
             var reply = context.MakeMessage();
+
+            // Store test
+            var messageDataService = new MessageDataService(new KitContext());
+            messageDataService.SaveMessage(new Message
+            {
+                Text = "This is a test",
+                User = "Brian"
+            });
 
             reply.Attachments.Add(eventCardAttachment);
             await context.PostAsync(reply);
