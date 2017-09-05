@@ -5,6 +5,8 @@ using System.Web.Http;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using KitSchmidt.Dialogs;
+using System;
+using Microsoft.Bot.Builder.Internals.Fibers;
 
 namespace KitSchmidt
 {
@@ -19,7 +21,21 @@ namespace KitSchmidt
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                try
+                {
+                    await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                }
+                catch (Exception Ex)
+                {
+                    if (Ex.GetType() == typeof(InvalidNeedException))
+                    {
+                        ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+                        Activity reply = activity.CreateReply("Sorry, I'm having some difficulties here. I have to reboot myself. Lets start over.");
+                        await connector.Conversations.ReplyToActivityAsync(reply);
+                        StateClient stateClient = activity.GetStateClient();
+                        await stateClient.BotState.DeleteStateForUserAsync(activity.ChannelId, activity.From.Id);
+                    }
+                }
             }
             else
             {

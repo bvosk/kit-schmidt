@@ -4,17 +4,16 @@ using System;
 namespace KitSchmidt.Forms
 {
     [Serializable]
-    public class EventPoll
+    public class EventForm
     {
         public String Name { get; set; }
         public DateTime Date { get; set; }
-        public enum InvitePolicy { OthersWelcome, AskMe, InvitationOnly }
         [Optional]
         public string Description { get; set; }
 
-        public static IForm<EventPoll> BuildForm()
+        public static IForm<EventForm> BuildForm()
         {
-            return new FormBuilder<EventPoll>()
+            return new FormBuilder<EventForm>()
                 .Message("Please give me some information about the event")
                 .Build();
         }

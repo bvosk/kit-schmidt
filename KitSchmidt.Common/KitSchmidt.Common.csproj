@@ -171,13 +171,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL\IMessageDataService.cs" />
+    <Compile Include="DAL\EventDataService.cs" />
+    <Compile Include="DAL\IEventDataService.cs" />
+    <Compile Include="DAL\IUserDataService.cs" />
     <Compile Include="DAL\KitContext.cs" />
-    <Compile Include="DAL\MessageDataService.cs" />
+    <Compile Include="DAL\Models\Event.cs" />
     <Compile Include="DAL\Models\Message.cs" />
+    <Compile Include="DAL\Models\User.cs" />
+    <Compile Include="DAL\UserDataService.cs" />
     <Compile Include="Migrations\20170821012540_Reset1.cs" />
     <Compile Include="Migrations\20170821012540_Reset1.designer.cs">
       <DependentUpon>20170821012540_Reset1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20170904204553_AddUsers.cs" />
+    <Compile Include="Migrations\20170904204553_AddUsers.designer.cs">
+      <DependentUpon>20170904204553_AddUsers.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\KitContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

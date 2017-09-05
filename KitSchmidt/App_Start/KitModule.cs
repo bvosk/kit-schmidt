@@ -21,11 +21,11 @@ namespace KitSchmidt.App_Start
                 .As<KitContext>()
                 .InstancePerLifetimeScope();
 
-            builder
-                .RegisterType<MessageDataService>()
-                .Keyed<IMessageDataService>(FiberModule.Key_DoNotSerialize)
-                .As<IMessageDataService>()
-                .InstancePerLifetimeScope();
+            //builder
+            //    .RegisterType<MessageDataService>()
+            //    .Keyed<IMessageDataService>(FiberModule.Key_DoNotSerialize)
+            //    .As<IMessageDataService>()
+            //    .InstancePerLifetimeScope();
         }
     }
 }

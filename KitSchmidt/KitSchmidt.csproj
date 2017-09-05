@@ -278,6 +278,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Dialogs\MainMenuDialog.cs" />
+    <Compile Include="Dialogs\GreetUserDialog.cs" />
     <Compile Include="Dialogs\NewEventDialog.cs" />
     <Compile Include="Forms\EventPoll.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
