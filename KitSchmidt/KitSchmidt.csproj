@@ -294,6 +294,7 @@
     </Content>
     <Content Include="Connected Services\Application Insights\ConnectedService.json" />
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\kit-schmidt - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
