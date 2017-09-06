@@ -26,7 +26,6 @@ namespace KitSchmidt.Dialogs
             var activity = await result as Activity;
 
             context.Call(new GreetUserDialog(), GreetUserDialog.AfterGreetUser);
-            //context.Wait(MessageReceivedAsync);
         }
     }
 }

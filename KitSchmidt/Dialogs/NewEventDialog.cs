@@ -1,19 +1,14 @@
-﻿using Autofac;
-using KitSchmidt.App_Start;
-using KitSchmidt.Common.DAL;
-using KitSchmidt.Common.DAL.Models;
+﻿using KitSchmidt.Common.DAL.Models;
 using KitSchmidt.DAL;
-using KitSchmidt.DAL.Models;
 using KitSchmidt.Forms;
 using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Builder.FormFlow;
 using Microsoft.Bot.Connector;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace KitSchmidt.Dialogs
 {
@@ -27,20 +22,23 @@ namespace KitSchmidt.Dialogs
 
         public static async Task ResumeAfterNewEventDialog(IDialogContext context, IAwaitable<EventForm> result)
         {
-            // Store the value that NewOrderDialog returned. 
-            // (At this point, new order dialog has finished and returned some value to use within the root dialog.)
-            var newEvent = await result;
+            // Create new event from form results
+            var newEventForm = await result;
+            var newEvent = new Event
+            {
+                Name = newEventForm.Name,
+                Date = newEventForm.Date,
+                Description = newEventForm.Description
+            };
 
             // Store event
-            //var eventDataService = new EventDataService(new KitContext());
-            //eventDataService.SaveEvent(new Event
-            //{
-            //    Name = newEvent.Name,
-            //    Date = newEvent.Date,
-            //    Description = newEvent.Description,
-            //    CoordinatorId = context.Activity.From.Id
-            //});
+            var userId = context.UserData.GetValue<User>("user").Id;
+            var dbContext = new KitContext();
+            var user = dbContext.Users.Include(u => u.Events).First(u => u.Id == userId);
+            user.Events.Add(newEvent);
+            await dbContext.SaveChangesAsync();
 
+            // Display event card confirmation
             var eventCardAttachment = NewEventHeroCard(newEvent).ToAttachment();
             var reply = context.MakeMessage();
             reply.Attachments.Add(eventCardAttachment);
@@ -49,7 +47,7 @@ namespace KitSchmidt.Dialogs
             context.Done(newEvent);
         }
 
-        private static HeroCard NewEventHeroCard(EventForm newEvent)
+        private static HeroCard NewEventHeroCard(Event newEvent)
         {
             return new HeroCard()
             {
