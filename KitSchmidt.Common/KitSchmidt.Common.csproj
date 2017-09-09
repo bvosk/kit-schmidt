@@ -186,6 +186,10 @@
     <Compile Include="Migrations\20170904204553_AddUsers.designer.cs">
       <DependentUpon>20170904204553_AddUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20170909201934_UseMessages.cs" />
+    <Compile Include="Migrations\20170909201934_UseMessages.designer.cs">
+      <DependentUpon>20170909201934_UseMessages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\KitContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

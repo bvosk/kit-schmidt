@@ -7,6 +7,8 @@ using Microsoft.Bot.Connector;
 using KitSchmidt.Dialogs;
 using System;
 using Microsoft.Bot.Builder.Internals.Fibers;
+using KitSchmidt.DAL;
+using KitSchmidt.DAL.Models;
 
 namespace KitSchmidt
 {
@@ -19,6 +21,18 @@ namespace KitSchmidt
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
+            // Log message
+            var dbContext = new KitContext();
+            dbContext.Messages.Add(new Message
+            {
+                Type = activity.Type,
+                From = activity.From.Name,
+                To = activity.Recipient.Name,
+                Text = activity.Text,
+                InputDate = DateTime.Now
+            });
+            await dbContext.SaveChangesAsync();
+
             if (activity.Type == ActivityTypes.Message)
             {
                 try
