@@ -1,4 +1,5 @@
-﻿using KitSchmidt.Common.DAL.Models;
+﻿using KitSchmidt.Common;
+using KitSchmidt.Common.DAL.Models;
 using KitSchmidt.DAL;
 using KitSchmidt.Forms;
 using Microsoft.Bot.Builder.Dialogs;
@@ -44,6 +45,19 @@ namespace KitSchmidt.Dialogs
             reply.Attachments.Add(eventCardAttachment);
             await context.PostAsync(reply);
 
+            // Send event RSVP requests
+            ConnectorClient connector = new ConnectorClient(new Uri(context.Activity.ServiceUrl));
+            var members = await connector.Conversations.GetActivityMembersAsync(context.Activity.Conversation.Id, context.Activity.Id);
+            foreach(var member in members)
+            {
+                var newConversation = await connector.Conversations.CreateDirectConversationAsync(
+                    new ChannelAccount("KitSchmidt-Bot", "Kit Schmidt"),
+                    new ChannelAccount(member.Id),
+                    new Activity(
+                        type: ActivityTypes.Message,
+                        text: $"{user.Name} created a new event called {newEvent.Name}. Would you like to go?"));
+            }
+
             context.Done(newEvent);
         }
 
@@ -57,7 +71,7 @@ namespace KitSchmidt.Dialogs
                 {
                     new CardImage()
                     {
-                        Url = ConstantStrings.EventImageUrl
+                        Url = Constants.EventImageUrl
                     }
                 }
             };

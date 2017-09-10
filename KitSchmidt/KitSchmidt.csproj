@@ -273,7 +273,6 @@
     <Compile Include="App_Start\KitModule.cs" />
     <Compile Include="App_Start\ServiceFactory.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Constants.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\MainMenuDialog.cs" />
     <Compile Include="Dialogs\GreetUserDialog.cs" />

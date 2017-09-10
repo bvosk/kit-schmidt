@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using KitSchmidt.App_Start;
+using KitSchmidt.Common;
 using KitSchmidt.Common.DAL;
 using KitSchmidt.Common.DAL.Models;
 using KitSchmidt.DAL;
@@ -38,7 +39,7 @@ namespace KitSchmidt.Dialogs
             {
                 Actions = new List<CardAction>()
                     {
-                        new CardAction() { Title = ConstantStrings.NewEvent, Type = ActionTypes.ImBack, Value = ConstantStrings.NewEvent }
+                        new CardAction() { Title = Constants.NewEvent, Type = ActionTypes.ImBack, Value = Constants.NewEvent }
                     }
             };
             return reply;
@@ -47,7 +48,7 @@ namespace KitSchmidt.Dialogs
         private async Task MenuSelectionReceived(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
-            if (activity.Text == ConstantStrings.NewEvent)
+            if (activity.Text == Constants.NewEvent)
             {
                 await context.Forward(NewEventDialog.MakeNewEventDialog(), NewEventDialog.ResumeAfterNewEventDialog, activity);
             }

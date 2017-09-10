@@ -20,7 +20,7 @@ namespace KitSchmidt.ProactiveCloudEngine
 
             var testActivity = new Activity
             {
-                From = new ChannelAccount(name: "Proactive-Engine"),
+                From = new ChannelAccount("Proactive-Engine", "Proactive Cloud Engine"),
                 Type = ActivityTypes.Message,
                 Text = "Hello from the PCE!"
             };

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
-using KitSchmidt.Dialogs;
+using KitSchmidt.Common;
 using System;
 using Microsoft.Bot.Builder.Internals.Fibers;
 using KitSchmidt.DAL;
@@ -50,6 +50,10 @@ namespace KitSchmidt
                         await stateClient.BotState.DeleteStateForUserAsync(activity.ChannelId, activity.From.Id);
                     }
                 }
+            }
+            else if (activity.Type == Constants.EventReminder)
+            {
+                //await Conversation.SendAsync(activity, () => new Dialogs.EventReminderDialog());
             }
             else
             {

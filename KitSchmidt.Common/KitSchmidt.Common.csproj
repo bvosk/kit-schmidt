@@ -170,6 +170,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="DAL\EventDataService.cs" />
     <Compile Include="DAL\IEventDataService.cs" />
     <Compile Include="DAL\IUserDataService.cs" />
