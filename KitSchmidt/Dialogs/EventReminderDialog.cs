@@ -12,7 +12,7 @@ namespace KitSchmidt.Dialogs
     {
         public async Task StartAsync(IDialogContext context)
         {
-            var upcomingEvent = context.Activity.AsMessageActivity().Value as Event;
+            var upcomingEvent = context.Activity.AsMessageActivity().Attachments[0].Content as Event;
 
             new KitContext()
                 .Entry(upcomingEvent)

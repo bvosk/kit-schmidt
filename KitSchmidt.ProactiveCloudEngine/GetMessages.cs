@@ -32,9 +32,14 @@ namespace KitSchmidt.ProactiveCloudEngine
                 var reminderActivity = new Activity
                 {
                     From = new ChannelAccount(Constants.PceId, "Proactive Cloud Engine"),
-                    Type = ActivityTypes.Message,
-                    Value = upcomingEvent
+                    Type = ActivityTypes.Message
                 };
+                reminderActivity.Attachments.Add(new Attachment
+                {
+                    Name = "Event",
+                    ContentType = "Event",
+                    Content = upcomingEvent
+                });
 
                 var response = await client.Conversations.PostActivityAsync(conversation.ConversationId, reminderActivity);
                 log.Info($"Sent an event reminder for {upcomingEvent.Name}");
