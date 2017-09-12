@@ -7,6 +7,7 @@ using KitSchmidt.DAL;
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.Rest;
 
 namespace KitSchmidt.Dialogs
 {
@@ -18,7 +19,7 @@ namespace KitSchmidt.Dialogs
             var upcomingEvent = new KitContext()
                 .Events
                 .Include(e => e.Coordinator)
-                .FirstOrDefault(e => e.Id == (upcomingEventId));
+                .FirstOrDefault(e => e.Id == upcomingEventId);
             if (upcomingEvent == null)
             {
                 context.Done(new object());
@@ -29,8 +30,16 @@ namespace KitSchmidt.Dialogs
             var client = new ConnectorClient(new Uri(upcomingEvent.ServiceUrl));
             var botAccount = new ChannelAccount("KitSchmidt", "Kit Schmidt");
             var userAccount = new ChannelAccount(upcomingEvent.Coordinator.UserId);
+            string conversationId = "";
 
-            var conversationId = (await client.Conversations.CreateDirectConversationAsync(botAccount, userAccount)).Id;
+            try
+            {
+                conversationId = (await client.Conversations.CreateDirectConversationAsync(botAccount, userAccount)).Id;
+            }
+            catch (HttpOperationException ex)
+            {
+                context.Done(new object());
+            }
 
             var reminder = new Activity
             {
