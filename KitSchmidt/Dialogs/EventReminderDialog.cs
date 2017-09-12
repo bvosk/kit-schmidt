@@ -3,6 +3,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using KitSchmidt.Common.DAL.Models;
 using KitSchmidt.Utilitites;
 using Microsoft.Bot.Connector;
+using KitSchmidt.DAL;
 
 namespace KitSchmidt.Dialogs
 {
@@ -11,6 +12,11 @@ namespace KitSchmidt.Dialogs
         public async Task StartAsync(IDialogContext context)
         {
             var upcomingEvent = context.Activity.AsMessageActivity().Value as Event;
+
+            new KitContext()
+                .Entry(upcomingEvent)
+                .Reference(e => e.Coordinator)
+                .Load();
 
             var eventCardAttachment = Utilities.EventHeroCard(upcomingEvent).ToAttachment();
             var reminder = context.MakeMessage();

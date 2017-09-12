@@ -23,7 +23,6 @@ namespace KitSchmidt.ProactiveCloudEngine
 
             var dbContext = new KitContext();
             var upcomingEvents = dbContext.Events
-                .Include(e => e.Coordinator)
                 .Where(e => (DateTime.Now - e.Date).Hours < 1)
                 .ToList();
 

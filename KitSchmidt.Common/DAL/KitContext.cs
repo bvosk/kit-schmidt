@@ -15,9 +15,7 @@ namespace KitSchmidt.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Event>()
-                .HasOne(p => p.Coordinator)
-                .WithMany(b => b.Events)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(p => p.Coordinator);
         }
 
         public DbSet<Event> Events { get; set; }
