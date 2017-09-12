@@ -35,25 +35,29 @@ namespace KitSchmidt
 
             if (activity.Type == ActivityTypes.Message)
             {
-                try
+                if (activity.From.Id == Constants.PceId)
                 {
-                    await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                    // Process event reminder from PCE
+                    await Conversation.SendAsync(activity, () => new Dialogs.EventReminderDialog());
                 }
-                catch (Exception Ex)
+                else
                 {
-                    if (Ex.GetType() == typeof(InvalidNeedException))
+                    try
                     {
-                        ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-                        Activity reply = activity.CreateReply("Sorry, I'm having some difficulties here. I have to reboot myself. Lets start over.");
-                        await connector.Conversations.ReplyToActivityAsync(reply);
-                        StateClient stateClient = activity.GetStateClient();
-                        await stateClient.BotState.DeleteStateForUserAsync(activity.ChannelId, activity.From.Id);
+                        await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                    }
+                    catch (Exception Ex)
+                    {
+                        if (Ex.GetType() == typeof(InvalidNeedException))
+                        {
+                            ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+                            Activity reply = activity.CreateReply("Sorry, I'm having some difficulties here. I have to reboot myself. Lets start over.");
+                            await connector.Conversations.ReplyToActivityAsync(reply);
+                            StateClient stateClient = activity.GetStateClient();
+                            await stateClient.BotState.DeleteStateForUserAsync(activity.ChannelId, activity.From.Id);
+                        }
                     }
                 }
-            }
-            else if (activity.Type == Constants.EventReminder)
-            {
-                await Conversation.SendAsync(activity, () => new Dialogs.EventReminderDialog());
             }
             else
             {

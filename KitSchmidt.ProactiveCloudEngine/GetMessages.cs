@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using KitSchmidt.DAL;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using KitSchmidt.Common;
 
 namespace KitSchmidt.ProactiveCloudEngine
 {
@@ -30,7 +31,7 @@ namespace KitSchmidt.ProactiveCloudEngine
             {
                 var reminderActivity = new Activity
                 {
-                    From = new ChannelAccount("Proactive-Engine", "Proactive Cloud Engine"),
+                    From = new ChannelAccount(Constants.PceId, "Proactive Cloud Engine"),
                     Type = ActivityTypes.Message,
                     Value = upcomingEvent
                 };
