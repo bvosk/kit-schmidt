@@ -1,13 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
-using KitSchmidt.Common.DAL.Models;
 using KitSchmidt.Utilitites;
 using Microsoft.Bot.Connector;
 using KitSchmidt.DAL;
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using Microsoft.Rest;
 
 namespace KitSchmidt.Dialogs
 {
@@ -36,7 +34,7 @@ namespace KitSchmidt.Dialogs
             {
                 conversationId = (await client.Conversations.CreateDirectConversationAsync(botAccount, userAccount)).Id;
             }
-            catch (HttpOperationException ex)
+            catch (Exception ex)
             {
                 context.Done(new object());
             }
