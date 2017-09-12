@@ -25,16 +25,19 @@ namespace KitSchmidt.Dialogs
             var botAccount = new ChannelAccount("KitSchmidt", "Kit Schmidt");
             var userAccount = new ChannelAccount(upcomingEvent.Coordinator.UserId);
 
+            var conversationId = (await client.Conversations.CreateDirectConversationAsync(botAccount, userAccount)).Id;
+
             var reminder = new Activity
             {
                 Type = ActivityTypes.Message,
                 Recipient = userAccount,
                 From = botAccount,
-                Text = $"Don't forget about {upcomingEvent.Coordinator.Name}'s upcoming event!"
+                Text = $"Don't forget about {upcomingEvent.Coordinator.Name}'s upcoming event!",
+                Conversation = new ConversationAccount(id: conversationId)
             };
             reminder.Attachments.Add(eventCardAttachment);
 
-            await client.Conversations.CreateDirectConversationAsync(botAccount, userAccount, reminder);
+            await client.Conversations.SendToConversationAsync(reminder);
 
             context.Done(new object());
         }
