@@ -13,5 +13,6 @@ namespace KitSchmidt.Common.DAL.Models
         public DateTime Date { get; set; }
         public String Description { get; set; }
         public User Coordinator { get; set; }
+        public string ServiceUrl { get; set; }
     }
 }

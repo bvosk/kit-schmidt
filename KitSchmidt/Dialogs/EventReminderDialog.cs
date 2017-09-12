@@ -4,6 +4,7 @@ using KitSchmidt.Common.DAL.Models;
 using KitSchmidt.Utilitites;
 using Microsoft.Bot.Connector;
 using KitSchmidt.DAL;
+using System;
 
 namespace KitSchmidt.Dialogs
 {
@@ -19,13 +20,20 @@ namespace KitSchmidt.Dialogs
                 .Load();
 
             var eventCardAttachment = Utilities.EventHeroCard(upcomingEvent).ToAttachment();
-            var reminder = context.MakeMessage();
-            reminder.Recipient = new ChannelAccount(upcomingEvent.Coordinator.UserId);
-            reminder.From = new ChannelAccount("KitSchmidt", "Kit Schmidt");
-            reminder.Text = $"Don't forget about {upcomingEvent.Coordinator.Name}'s upcoming event!";
+
+            var client = new ConnectorClient(new Uri(upcomingEvent.ServiceUrl));
+            var botAccount = new ChannelAccount("KitSchmidt", "Kit Schmidt");
+            var userAccount = new ChannelAccount(upcomingEvent.Coordinator.UserId);
+
+            var reminder = new Activity
+            {
+                Recipient = userAccount,
+                From = botAccount,
+                Text = $"Don't forget about {upcomingEvent.Coordinator.Name}'s upcoming event!"
+            };
             reminder.Attachments.Add(eventCardAttachment);
 
-            await context.PostAsync(reminder);
+            await client.Conversations.CreateDirectConversationAsync(botAccount, userAccount, reminder);
 
             context.Done(new object());
         }

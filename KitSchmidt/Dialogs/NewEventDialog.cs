@@ -30,7 +30,8 @@ namespace KitSchmidt.Dialogs
             {
                 Name = newEventForm.Name,
                 Date = newEventForm.Date,
-                Description = newEventForm.Description
+                Description = newEventForm.Description,
+                ServiceUrl = context.Activity.ServiceUrl
             };
 
             // Store event
