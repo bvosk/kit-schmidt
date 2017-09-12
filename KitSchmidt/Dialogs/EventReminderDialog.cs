@@ -5,6 +5,7 @@ using KitSchmidt.Utilitites;
 using Microsoft.Bot.Connector;
 using KitSchmidt.DAL;
 using System;
+using Newtonsoft.Json;
 
 namespace KitSchmidt.Dialogs
 {
@@ -12,7 +13,7 @@ namespace KitSchmidt.Dialogs
     {
         public async Task StartAsync(IDialogContext context)
         {
-            var upcomingEvent = context.Activity.AsMessageActivity().Attachments[0].Content as Event;
+            var upcomingEvent = JsonConvert.DeserializeObject<Event>(context.Activity.AsMessageActivity().Attachments[0].Content.ToString());
 
             new KitContext()
                 .Entry(upcomingEvent)
