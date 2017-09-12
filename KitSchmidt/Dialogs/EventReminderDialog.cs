@@ -27,6 +27,7 @@ namespace KitSchmidt.Dialogs
 
             var reminder = new Activity
             {
+                Type = ActivityTypes.Message,
                 Recipient = userAccount,
                 From = botAccount,
                 Text = $"Don't forget about {upcomingEvent.Coordinator.Name}'s upcoming event!"

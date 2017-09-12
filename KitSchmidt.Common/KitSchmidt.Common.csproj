@@ -191,6 +191,10 @@
     <Compile Include="Migrations\20170909201934_UseMessages.designer.cs">
       <DependentUpon>20170909201934_UseMessages.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20170912025750_AddServiceUrlToEvents.cs" />
+    <Compile Include="Migrations\20170912025750_AddServiceUrlToEvents.designer.cs">
+      <DependentUpon>20170912025750_AddServiceUrlToEvents.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\KitContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
