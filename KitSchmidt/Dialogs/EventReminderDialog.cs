@@ -14,11 +14,11 @@ namespace KitSchmidt.Dialogs
     {
         public async Task StartAsync(IDialogContext context)
         {
-            var upcomingEventId = context.Activity.AsMessageActivity().Attachments[0].Content as int?;
+            var upcomingEventId = int.Parse(context.Activity.AsMessageActivity().Attachments[0].Content.ToString());
             var upcomingEvent = new KitContext()
                 .Events
                 .Include(e => e.Coordinator)
-                .FirstOrDefault(e => e.Id == (upcomingEventId ?? 0));
+                .FirstOrDefault(e => e.Id == (upcomingEventId));
             if (upcomingEvent == null)
             {
                 context.Done(new object());
