@@ -5,7 +5,8 @@ using KitSchmidt.Utilitites;
 using Microsoft.Bot.Connector;
 using KitSchmidt.DAL;
 using System;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace KitSchmidt.Dialogs
 {
@@ -13,12 +14,15 @@ namespace KitSchmidt.Dialogs
     {
         public async Task StartAsync(IDialogContext context)
         {
-            var upcomingEvent = JsonConvert.DeserializeObject<Event>(context.Activity.AsMessageActivity().Attachments[0].Content.ToString());
-
-            new KitContext()
-                .Entry(upcomingEvent)
-                .Reference(e => e.Coordinator)
-                .Load();
+            var upcomingEventId = context.Activity.AsMessageActivity().Attachments[0].Content as int?;
+            var upcomingEvent = new KitContext()
+                .Events
+                .Include(e => e.Coordinator)
+                .FirstOrDefault(e => e.Id == (upcomingEventId ?? 0));
+            if (upcomingEvent == null)
+            {
+                context.Done(new object());
+            }
 
             var eventCardAttachment = Utilities.EventHeroCard(upcomingEvent).ToAttachment();
 

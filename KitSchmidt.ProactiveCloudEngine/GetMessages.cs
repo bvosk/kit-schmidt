@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using KitSchmidt.Common;
 using System.Collections.Generic;
+using KitSchmidt.Common.DAL.Models;
 
 namespace KitSchmidt.ProactiveCloudEngine
 {
@@ -21,10 +22,12 @@ namespace KitSchmidt.ProactiveCloudEngine
 
             var directLineSecret = "8mro3m2-O_0.cwA.kHQ.j6pa4HpvkyZVs-pNaT3ZXHjZdTY_26jAYC_2x1kDzPU";
             var client = new DirectLineClient(secretOrToken: directLineSecret);
+
             var conversation = await client.Conversations.StartConversationAsync();
 
             var dbContext = new KitContext();
             var upcomingEvents = dbContext.Events
+                .Include(e => e.Coordinator)
                 .Where(e => (DateTime.Now - e.Date).Hours < 1)
                 .ToList();
 
@@ -40,7 +43,7 @@ namespace KitSchmidt.ProactiveCloudEngine
                         {
                             Name = "Event",
                             ContentType = "Event",
-                            Content = upcomingEvent
+                            Content = upcomingEvent.Id
                         }
                     }
                 };
