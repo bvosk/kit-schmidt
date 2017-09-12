@@ -2,6 +2,7 @@
 using KitSchmidt.Common.DAL.Models;
 using KitSchmidt.DAL;
 using KitSchmidt.Forms;
+using KitSchmidt.Utilitites;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.FormFlow;
 using Microsoft.Bot.Connector;
@@ -40,28 +41,12 @@ namespace KitSchmidt.Dialogs
             await dbContext.SaveChangesAsync();
 
             // Display event card confirmation
-            var eventCardAttachment = NewEventHeroCard(newEvent).ToAttachment();
+            var eventCardAttachment = Utilities.EventHeroCard(newEvent).ToAttachment();
             var reply = context.MakeMessage();
             reply.Attachments.Add(eventCardAttachment);
             await context.PostAsync(reply);
 
             context.Done(newEvent);
-        }
-
-        private static HeroCard NewEventHeroCard(Event newEvent)
-        {
-            return new HeroCard()
-            {
-                Title = $"{newEvent.Name}",
-                Subtitle = $"{newEvent.Date.ToString("g")}",
-                Images = new List<CardImage>
-                {
-                    new CardImage()
-                    {
-                        Url = Constants.EventImageUrl
-                    }
-                }
-            };
         }
     }
 }

@@ -53,7 +53,7 @@ namespace KitSchmidt
             }
             else if (activity.Type == Constants.EventReminder)
             {
-                //await Conversation.SendAsync(activity, () => new Dialogs.EventReminderDialog());
+                await Conversation.SendAsync(activity, () => new Dialogs.EventReminderDialog());
             }
             else
             {
