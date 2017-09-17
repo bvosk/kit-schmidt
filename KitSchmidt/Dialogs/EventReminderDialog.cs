@@ -52,6 +52,8 @@ namespace KitSchmidt.Dialogs
             await client.Conversations.SendToConversationAsync(reminder);
 
             context.Done(new object());
+
+            return;
         }
     }
 }
