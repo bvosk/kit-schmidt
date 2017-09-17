@@ -20,11 +20,6 @@ namespace KitSchmidt.ProactiveCloudEngine
         {
             log.Info($"Proactive cloud engine executed at: {DateTime.Now}");
 
-            var directLineSecret = "8mro3m2-O_0.cwA.kHQ.j6pa4HpvkyZVs-pNaT3ZXHjZdTY_26jAYC_2x1kDzPU";
-            var client = new DirectLineClient(secretOrToken: directLineSecret);
-
-            var conversation = await client.Conversations.StartConversationAsync();
-
             var dbContext = new KitContext();
             var upcomingEvents = dbContext.Events
                 .Include(e => e.Coordinator)
@@ -36,6 +31,7 @@ namespace KitSchmidt.ProactiveCloudEngine
 
             foreach(var upcomingEvent in upcomingEvents)
             {
+                // Send event
                 var reminderActivity = new Activity
                 {
                     From = new ChannelAccount(Constants.PceId, "Proactive Cloud Engine"),
@@ -50,17 +46,20 @@ namespace KitSchmidt.ProactiveCloudEngine
                         }
                     }
                 };
-
+                var directLineSecret = "8mro3m2-O_0.cwA.kHQ.j6pa4HpvkyZVs-pNaT3ZXHjZdTY_26jAYC_2x1kDzPU";
+                var client = new DirectLineClient(secretOrToken: directLineSecret);
+                var conversation = await client.Conversations.StartConversationAsync();
                 var response = await client.Conversations.PostActivityAsync(conversation.ConversationId, reminderActivity);
 
+                // Mark event reminder as sent
                 dbContext.Update(upcomingEvent);
                 upcomingEvent.ReminderSent = true;
+                await dbContext.SaveChangesAsync();
 
+                // Log info
                 log.Info($"Sent an event reminder for {upcomingEvent.Name}");
                 log.Info($"Got this response from bot: { response?.Id?.ToString() ?? "null response" }");
             }
-
-            await dbContext.SaveChangesAsync();
         }
     }
 }

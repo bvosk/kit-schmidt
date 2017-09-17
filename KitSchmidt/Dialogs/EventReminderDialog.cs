@@ -13,6 +13,13 @@ namespace KitSchmidt.Dialogs
     {
         public async Task StartAsync(IDialogContext context)
         {
+            context.Wait(MessageRecievedAsync);
+        }
+
+        private static async Task MessageRecievedAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
+        {
+            var result = await argument;
+
             var upcomingEventId = int.Parse(context.Activity.AsMessageActivity().Attachments[0].Content.ToString());
             var upcomingEvent = new KitContext()
                 .Events
@@ -30,14 +37,7 @@ namespace KitSchmidt.Dialogs
             var userAccount = new ChannelAccount(upcomingEvent.Coordinator.UserId);
             string conversationId = "";
 
-            try
-            {
-                conversationId = (await client.Conversations.CreateDirectConversationAsync(botAccount, userAccount)).Id;
-            }
-            catch (Exception ex)
-            {
-                context.Done(new object());
-            }
+            conversationId = (await client.Conversations.CreateDirectConversationAsync(botAccount, userAccount)).Id;
 
             var reminder = new Activity
             {
@@ -52,8 +52,6 @@ namespace KitSchmidt.Dialogs
             await client.Conversations.SendToConversationAsync(reminder);
 
             context.Done(new object());
-
-            return;
         }
     }
 }
