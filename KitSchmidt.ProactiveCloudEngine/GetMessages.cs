@@ -28,7 +28,10 @@ namespace KitSchmidt.ProactiveCloudEngine
             var dbContext = new KitContext();
             var upcomingEvents = dbContext.Events
                 .Include(e => e.Coordinator)
-                .Where(e => (DateTime.Now - e.Date).Hours < 1)
+                // Occurs within the next hour
+                .Where(e => (e.Date - DateTime.Now).Hours == 0)
+                // Reminder has not already been sent
+                .Where(e => !e.ReminderSent)
                 .ToList();
 
             foreach(var upcomingEvent in upcomingEvents)
@@ -49,9 +52,15 @@ namespace KitSchmidt.ProactiveCloudEngine
                 };
 
                 var response = await client.Conversations.PostActivityAsync(conversation.ConversationId, reminderActivity);
+
+                dbContext.Update(upcomingEvent);
+                upcomingEvent.ReminderSent = true;
+
                 log.Info($"Sent an event reminder for {upcomingEvent.Name}");
                 log.Info($"Got this response from bot: { response?.Id?.ToString() ?? "null response" }");
             }
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }

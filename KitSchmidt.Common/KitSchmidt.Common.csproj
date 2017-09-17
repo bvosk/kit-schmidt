@@ -195,6 +195,10 @@
     <Compile Include="Migrations\20170912025750_AddServiceUrlToEvents.designer.cs">
       <DependentUpon>20170912025750_AddServiceUrlToEvents.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20170917205018_TrackReminderStatus.cs" />
+    <Compile Include="Migrations\20170917205018_TrackReminderStatus.designer.cs">
+      <DependentUpon>20170917205018_TrackReminderStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\KitContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

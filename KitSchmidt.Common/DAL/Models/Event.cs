@@ -14,5 +14,6 @@ namespace KitSchmidt.Common.DAL.Models
         public String Description { get; set; }
         public User Coordinator { get; set; }
         public string ServiceUrl { get; set; }
+        public bool ReminderSent { get; set; }
     }
 }

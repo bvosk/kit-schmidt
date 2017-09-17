@@ -8,9 +8,10 @@ using KitSchmidt.DAL;
 namespace KitSchmidt.Common.Migrations
 {
     [DbContext(typeof(KitContext))]
-    partial class KitContextModelSnapshot : ModelSnapshot
+    [Migration("20170917205018_TrackReminderStatus")]
+    partial class TrackReminderStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
