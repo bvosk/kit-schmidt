@@ -9,17 +9,11 @@ using System.Linq;
 
 namespace KitSchmidt.Dialogs
 {
-    internal class EventReminderDialog : IDialog<object>
+    [Serializable]
+    public class EventReminderDialog : IDialog<object>
     {
         public async Task StartAsync(IDialogContext context)
         {
-            context.Wait(MessageRecievedAsync);
-        }
-
-        private static async Task MessageRecievedAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
-        {
-            var result = await argument;
-
             var upcomingEventId = int.Parse(context.Activity.AsMessageActivity().Attachments[0].Content.ToString());
             var upcomingEvent = new KitContext()
                 .Events
