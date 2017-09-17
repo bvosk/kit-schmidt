@@ -6,6 +6,7 @@ using KitSchmidt.DAL;
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading;
 
 namespace KitSchmidt.Dialogs
 {
@@ -45,6 +46,7 @@ namespace KitSchmidt.Dialogs
 
             await client.Conversations.SendToConversationAsync(reminder);
 
+            await context.FlushAsync(CancellationToken.None);
             context.Reset();
         }
     }
