@@ -21,7 +21,7 @@ namespace KitSchmidt.Dialogs
                 .FirstOrDefault(e => e.Id == upcomingEventId);
             if (upcomingEvent == null)
             {
-                context.Done(new object());
+                context.Reset();
             }
 
             var eventCardAttachment = Utilities.EventHeroCard(upcomingEvent).ToAttachment();
@@ -45,7 +45,7 @@ namespace KitSchmidt.Dialogs
 
             await client.Conversations.SendToConversationAsync(reminder);
 
-            context.Done(new object());
+            context.Reset();
         }
     }
 }
